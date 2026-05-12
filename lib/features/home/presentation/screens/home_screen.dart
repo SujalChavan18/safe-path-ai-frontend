@@ -28,19 +28,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
     final mapProvider = context.watch<MapProvider>();
-    
-    final user = authProvider.user;
+
     final incidents = mapProvider.incidents;
-    
+
     // Sort incidents by time or severity for the feed
     final recentIncidents = List<IncidentModel>.from(incidents)
       ..sort((a, b) => b.reportedAt.compareTo(a.reportedAt));
-      
-    final highSeverityIncidents = incidents.where((i) => 
-      i.severity == IncidentSeverity.critical || 
-      i.severity == IncidentSeverity.high
-    ).toList();
-    
+
+    final highSeverityIncidents = incidents
+        .where(
+          (i) =>
+              i.severity == IncidentSeverity.critical ||
+              i.severity == IncidentSeverity.high,
+        )
+        .toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -65,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hello, ${user?.displayName?.split(' ').first ?? 'Traveler'}',
+                        'Hello, ${authProvider.displayName?.split(' ').first ?? 'Traveler'}',
                         style: const TextStyle(
                           color: AppColors.onSurfaceVariant,
                           fontSize: 14,
@@ -81,15 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 18,
                     backgroundColor: AppColors.surfaceVariant,
-                    backgroundImage: user?.photoURL != null 
-                        ? NetworkImage(user!.photoURL!) 
-                        : null,
-                    child: user?.photoURL == null 
-                        ? const Icon(Icons.person, color: AppColors.onSurface)
-                        : null,
+                    child: Icon(
+                      Icons.person,
+                      color: AppColors.onSurface,
+                    ),
                   ),
                 ],
               ),
@@ -108,11 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     score: _calculateOverallScore(mapProvider),
                     locationName: 'San Francisco, CA',
                   ),
+
                   const SizedBox(height: AppDimensions.space24),
 
                   // Quick Actions
                   QuickActionsRow(
-                    onReportIncident: () => context.pushNamed(RouteNames.reportIncidentName),
+                    onReportIncident: () =>
+                        context.pushNamed(RouteNames.reportIncidentName),
                     onShareLocation: () {
                       // Share logic
                     },
@@ -120,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context.goNamed(RouteNames.mapName);
                     },
                   ),
+
                   const SizedBox(height: AppDimensions.space32),
 
                   // Heatmap Preview
@@ -131,13 +134,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+
                   const SizedBox(height: AppDimensions.space16),
+
                   HeatmapPreview(
                     onTap: () {
                       mapProvider.toggleLayer(heatmap: true);
+
                       context.goNamed(RouteNames.mapName);
                     },
                   ),
+
                   const SizedBox(height: AppDimensions.space32),
 
                   // Active Alerts
@@ -153,7 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => context.goNamed(RouteNames.alertsName),
+                        onPressed: () =>
+                            context.goNamed(RouteNames.alertsName),
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.primary,
                           padding: EdgeInsets.zero,
@@ -163,8 +171,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: AppDimensions.space16),
-                  
+
                   // Horizontal scrolling alert cards
                   SizedBox(
                     height: 160,
@@ -173,8 +182,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.horizontal,
                             itemCount: 3,
                             itemBuilder: (context, index) => const Padding(
-                              padding: EdgeInsets.only(right: AppDimensions.space16),
-                              child: SkeletonLoader(width: 260, height: 160, borderRadius: AppDimensions.radiusMedium),
+                              padding: EdgeInsets.only(
+                                right: AppDimensions.space16,
+                              ),
+                              child: SkeletonLoader(
+                                width: 260,
+                                height: 160,
+                                borderRadius:
+                                    AppDimensions.radiusMedium,
+                              ),
                             ),
                           )
                         : ListView.builder(
@@ -184,7 +200,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               return AlertCard(
                                 incident: highSeverityIncidents[index],
                                 onTap: () {
-                                  mapProvider.selectIncident(highSeverityIncidents[index].id);
+                                  mapProvider.selectIncident(
+                                    highSeverityIncidents[index].id,
+                                  );
+
                                   context.goNamed(RouteNames.mapName);
                                 },
                               );
@@ -203,31 +222,52 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
+
                   const SizedBox(height: AppDimensions.space8),
+
                   Container(
                     decoration: BoxDecoration(
                       color: AppColors.surface.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
-                      border: Border.all(color: AppColors.outline),
+                      borderRadius: BorderRadius.circular(
+                        AppDimensions.radiusLarge,
+                      ),
+                      border: Border.all(
+                        color: AppColors.outline,
+                      ),
                     ),
                     child: mapProvider.isLoading
                         ? ListView.separated(
-                            padding: const EdgeInsets.all(AppDimensions.space20),
-                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(
+                              AppDimensions.space20,
+                            ),
+                            physics:
+                                const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: 4,
-                            separatorBuilder: (context, index) => const SizedBox(height: 16),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 16),
                             itemBuilder: (context, index) => Row(
                               children: [
-                                const SkeletonLoader(width: 40, height: 40, borderRadius: 8),
+                                const SkeletonLoader(
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: 8,
+                                ),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      const SkeletonLoader(width: 150, height: 14),
+                                      const SkeletonLoader(
+                                        width: 150,
+                                        height: 14,
+                                      ),
                                       const SizedBox(height: 8),
-                                      const SkeletonLoader(width: double.infinity, height: 12),
+                                      const SkeletonLoader(
+                                        width: double.infinity,
+                                        height: 12,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -238,6 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             incidents: recentIncidents,
                             onIncidentTap: (id) {
                               mapProvider.selectIncident(id);
+
                               context.goNamed(RouteNames.mapName);
                             },
                           ),
@@ -256,8 +297,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int _calculateOverallScore(MapProvider provider) {
     if (provider.incidentCount == 0) return 98;
+
     if (provider.criticalCount > 5) return 35;
+
     if (provider.incidentCount > 10) return 65;
+
     return 85;
   }
 }
