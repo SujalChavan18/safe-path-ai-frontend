@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296547997379",
+    "project_id": "safepath-ai-sujal",
+    "storage_bucket": "safepath-ai-sujal.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296547997379:android:1ecd43f4f20fe5890ab476",
+        "android_client_info": {
+          "package_name": "com.example.safe_path_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxr5i6sI8alonyuemvbJWR7gBIMZPNkTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,65 @@
+name: safe_path_ai
+description: "SafePath AI — Crowdsourced Geospatial Safety & Smart Routing System"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── UI ──
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+
+  # ── State Management ──
+  provider: ^6.1.2
+
+  # ── Routing ──
+  go_router: ^14.8.1
+
+  # ── Network ──
+  dio: ^5.7.0
+  connectivity_plus: ^6.1.1
+
+  # ── Firebase ──
+  firebase_core: ^3.12.1
+  firebase_auth: ^5.5.1
+  cloud_firestore: ^5.6.5
+  firebase_messaging: ^15.2.4
+  google_sign_in: ^6.2.2
+
+  # ── Maps & Location ──
+  google_maps_flutter: ^2.12.1
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
+
+  # ── Notifications ──
+  flutter_local_notifications: ^18.0.1
+
+  # ── Media ──
+  image_picker: ^1.1.2
+
+  # ── Storage ──
+  shared_preferences: ^2.3.4
+  flutter_secure_storage: ^9.2.4
+  intl: ^0.20.2
+  timeago: ^3.7.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Uncomment when actual assets are added to these directories:
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
+  #   - assets/animations/
